@@ -11,17 +11,21 @@ function binarysearch(array, x; by=identity, lt=<, rev=false)
                         m:m
                     end
                 elseif lt(x, array[m])
-                  binarysearch_(array, x, l, m - 1)
+                  if rev
+                    binarysearch_(array, x, m + 1, r)
+                  else
+                    binarysearch_(array, x, l, m - 1)
+                  end
                 else
-                  binarysearch_(array, x, m + 1, r)
+                  if rev
+                    binarysearch_(array, x, l, m - 1)
+                  else
+                    binarysearch_(array, x, m + 1, r)
+                  end
                 end
             end
         end
     end
 
-    if rev
-        binarysearch_(map(by, array) | reverse, by(x), 1, length(array))
-    else
-        binarysearch_(map(by, array), by(x), 1, length(array))
-    end
+    binarysearch_(array .|> by, by(x), 1, length(array))
 end
